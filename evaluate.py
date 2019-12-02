@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 # Copyright 2017 Kakao, Recommendation Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,16 +20,20 @@ import six
 from six.moves import zip, cPickle
 
 
+
+
 def evaluate(predict_path, data_path, div, y_vocab_path):
     h = h5py.File(data_path, 'r')[div]
-    y_vocab = cPickle.loads(open(y_vocab_path).read())
+    y_vocab = cPickle.loads(open(y_vocab_path,'rb').read())
     inv_y_vocab = {v: k for k, v in six.iteritems(y_vocab)}
+    #fin = open(predict_path) #edit at my python3.5.2
     fin = open(predict_path, 'rb')
     hit, n = defaultdict(lambda: 0), defaultdict(lambda: 0)
     print('loading ground-truth...')
     CATE = np.argmax(h['cate'], axis=1)
     for p, y in zip(fin, CATE):
-        pid, b, m, s, d = p.split('\t')
+        #pid, b, m, s, d = p.split('\t') #edit at my python3.5.2
+        pid, b, m, s, d = p.split('\t'.encode())
         b, m, s, d = list(map(int, [b, m, s, d]))
         gt = list(map(int, inv_y_vocab[y].split('>')))
         for depth, _p, _g in zip(['b', 'm', 's', 'd'],

@@ -16,7 +16,7 @@
 import os
 import json
 import threading
-
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 import fire
 import h5py
 import tqdm
